@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reservation;
 use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
+use App\Models\Reservation;
+use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
@@ -14,8 +15,7 @@ class ReservationController extends Controller
     public function index()
     {
         $reservation = Reservation::limit(200)->get();
-        return view('reservation.index',['reservation'=>$reservation]);
-
+        return view('reservation.index', ['reservation' => $reservation]);
     }
 
     /**
@@ -34,7 +34,7 @@ class ReservationController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
 
-        $reservation = Reservation::create($data); 
+        $reservation = Reservation::create($data);
 
         return redirect()->route('reservation.index');
     }
