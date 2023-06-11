@@ -2,19 +2,30 @@
 
 <h1>Create Reservation</h1>
 
-<form action="{{ url('reservations') }}" method="POST">
-    @csrf
-    <label for="room_number">Room Number:</label>
-    <input type="text" name="room_number" id="room_number" required>
 
-    <label for="guest_name">Guest Name:</label>
-    <input type="text" name="guest_name" id="guest_name" required>
+@if ($errors->any())
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
+
+<form action="{{ route('reservation.store') }}" method="POST">
+    @csrf
+
+    <label for="room_id">Room ID:</label>
+    <input type="number" name="room_id" id="room_id" value="{{ old('room_id') }}" required>
+
+
+    <label for="customer_id">Customer ID:</label>
+    <input type="number" name="customer_id" id="customer_id" value="{{ old('customer_id') }}" required>
+
 
     <label for="check_in_date">Check-in Date:</label>
-    <input type="date" name="check_in_date" id="check_in_date" required>
+    <input type="datetime" name="check_in_date" id="check_in_date" value="{{ old('check_in_date') }}" required>
 
     <label for="check_out_date">Check-out Date:</label>
-    <input type="date" name="check_out_date" id="check_out_date" required>
+    <input type="datetime" name="check_out_date" id="check_out_date" value="{{ old('check_out_date') }}" required>
 
-    <button type="submit">Create</button>
-</form>
+    <button type="submit">Crate</button>

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreReservationRequest;
 use App\Http\Requests\UpdateReservationRequest;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
@@ -14,8 +15,8 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        $reservation = Reservation::limit(200)->get();
-        return view('reservation.index', ['reservation' => $reservation]);
+        $reservations = Reservation::limit(200)->get();
+        return view('reservations.index', ['reservations' => $reservations]);
     }
 
     /**
@@ -23,7 +24,7 @@ class ReservationController extends Controller
      */
     public function create()
     {
-        return view('reservation.create');
+        return view('reservations.create');
     }
 
     /**
@@ -31,11 +32,9 @@ class ReservationController extends Controller
      */
     public function store(StoreReservationRequest $request)
     {
-        $data = $request->all();
-        $data['password'] = bcrypt($request->password);
-
+        $data = $request->validated();
+        $data->user_id = auth()->user()->id;
         $reservation = Reservation::create($data);
-
         return redirect()->route('reservation.index');
     }
 
@@ -53,23 +52,26 @@ class ReservationController extends Controller
     public function edit(int $id)
     {
         $reservation = reservation::findOrFail($id);
-
-        return view('reservation.edit', compact('reservation'));
+        return view('reservations.edit', ['reservation' => $reservation]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReservationRequest $request, Reservation $reservation)
+    public function update(UpdateReservationRequest $request, int $id)
     {
-        //
+        $reservation = Reservation::findOrFail($id);
+        $reservation->update($request->validated());
+        return redirect()->route('reservation.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reservation $reservation)
+    public function destroy(int $id)
     {
-        //
+        $reservation = Reservation::findOrFail($id);
+        $reservation->delete();
+        return redirect()->back();
     }
 }

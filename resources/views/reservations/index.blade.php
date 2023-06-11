@@ -1,36 +1,124 @@
-<!-- resources/views/reservations/index.blade.php -->
+﻿@extends('main')
+@section('content')
 
-<h1>Reservations</h1>
 
-<a href="{{ url('reservations/create') }}">Create Reservation</a>
 
-<table>
-    <thead>
-        <tr>
-            <th>Room Number</th>
-            <th>Guest Name</th>
-            <th>Check-in Date</th>
-            <th>Check-out Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($reservations as $reservation)
-            <tr>
-                <td>{{ $reservation->room_number }}</td>
-                <td>{{ $reservation->guest_name }}</td>
-                <td>{{ $reservation->check_in_date }}</td>
-                <td>{{ $reservation->check_out_date }}</td>
-                <td>
-                    <a href="{{ url('reservations/'.$reservation->id) }}">View</a>
-                    <a href="{{ url('reservations/'.$reservation->id.'/edit') }}">Edit</a>
-                    <form action="{{ url('reservations/'.$reservation->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+    <div id="main-wrapper">
+
+        <!--**********************************
+                                            Nav header start
+                                        ***********************************-->
+
+        <!--**********************************
+                                            Nav header end
+                                        ***********************************-->
+
+        <!--**********************************
+                                    *****************************
+                                            Chat box End
+                                        ***********************************-->
+
+
+
+
+        <!--**********************************
+                                            Header start
+                                        ***********************************-->
+
+
+        <!--**********************************
+                                            Header end ti-comment-alt
+                                        ***********************************-->
+
+        <!--**********************************
+                                            Sidebar start
+                                        ***********************************-->
+
+        <!--**********************************
+                                            Sidebar end
+                                        ***********************************-->
+
+        <!--**********************************
+                                            Content body start
+                                        ***********************************-->
+        <div class="content-body">
+
+
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Table</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Datatable</a></li>
+                </ol>
+            </div>
+            <!-- row -->
+
+
+            <div class="row">
+
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="{{ route('reservation.create') }}" class="btn btn-primary">+ Add new</a>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example5" class="display" style="min-width: 845px">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="form-check custom-checkbox ms-2">
+                                                    <input type="checkbox" class="form-check-input" id="checkAll"
+                                                        required="">
+                                                    <label class="form-check-label" for="checkAll"></label>
+                                                </div>
+                                            </th>
+                                            <th>quarto_id</th>
+                                            <th>cliente_id</th>
+                                            <th>administrador_id</th>
+                                            <th>check_in_date</th>
+                                            <th>check_out_date</th>
+                                        </tr>
+                                    </thead>
+
+                                    </thead>
+                                    <tbody>
+                                        @if ($reservations->count() > 0)
+                                            @foreach ($reservations as $rs)
+                                                <tr>
+                                                    <td>{{ $rs->room_id }}</td>
+                                                    <td>{{ $rs->customer_id }}</td>
+                                                    <td>{{ $rs->user_id }}</td>
+                                                    <td>{{ $rs->check_in_date }}</td>
+                                                    <td>{{ $rs->check_out_date }}</td>
+
+
+                                                    <!--  redireciona o botao editar e apagar para os repectivos ficheiros  -->
+                                                    <td>
+                                                        <a class="btn btn-sm btn-info "
+                                                            href="{{ route('reservation.edit', ['id' => $rs->id]) }}"> Editar
+                                                        </a> -
+                                                        <form action="{{ route('reservation.destroy', $rs->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-danger m-0" type="submit" btn
+                                                                btn-danger>Delete</button>
+                                                        </form>
+
+                                                    </td>
+
+
+                                                </tr>
+                                            @endforeach
+                                        @endif
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            @endsection

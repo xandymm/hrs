@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreReservationRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreReservationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,10 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'room_id' => ['required', 'integer', Rule::exists('rooms', 'id')],
+            'customer_id' => ['required', 'integer', Rule::exists('customers', 'id')],
+            'check_in_date' => ['required', 'date'],
+            'check_out_date' => ['required', 'date']
         ];
     }
 }
