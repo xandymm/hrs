@@ -33,7 +33,6 @@ class ReservationController extends Controller
     public function store(StoreReservationRequest $request)
     {
         $data = $request->validated();
-        $data->user_id = auth()->user()->id;
         $reservation = Reservation::create($data);
         return redirect()->route('reservation.index');
     }
