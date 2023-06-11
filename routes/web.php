@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReservationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,19 +15,17 @@ use App\Http\Controllers\ReservationController;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
-Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
-Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
-Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
-Route::get('/reservation/{id}/edit',[reservationController::class,'edit'])->name('reservation.edit');
 
-use App\Http\Controllers\RoomReservationController;
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('reservations', [RoomReservationController::class, 'index']);
-Route::get('reservations/create', [RoomReservationController::class, 'create']);
-Route::post('reservations', [RoomReservationController::class, 'store']);
-Route::get('reservations/{id}', [RoomReservationController::class, 'show']);
-Route::get('reservations/{id}/edit', [RoomReservationController::class, 'edit']);
-Route::put('reservations/{id}', [RoomReservationController::class, 'update']);
-Route::delete('reservations/{id}', [RoomReservationController::class, 'destroy']);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

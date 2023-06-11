@@ -64,3 +64,18 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Route::get('/', function () {
+    return view('home');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.index');
+    Route::get('/reservation/create', [ReservationController::class, 'create'])->name('reservation.create');
+    Route::post('/reservation', [ReservationController::class, 'store'])->name('reservation.store');
+    Route::get('/reservation/{id}/edit', [ReservationController::class, 'edit'])->name('reservation.edit');
+    Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('reservation.update');
+    Route::delete('/reservation/{id}/destroy', [ReservationController::class, 'destroy'])->name('reservation.destroy');
+
+});
+
