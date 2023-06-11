@@ -50,7 +50,7 @@ class ReservationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reservation $reservation)
+    public function edit(int $id)
     {
         $reservation = reservation::findOrFail($id);
 

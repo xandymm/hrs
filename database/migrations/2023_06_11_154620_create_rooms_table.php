@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('number');
             $table->string('type');
             $table->string('daily_price');
             $table->timestamps();
